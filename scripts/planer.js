@@ -1,3 +1,5 @@
+import { Habit } from "../api/Habit.class.js";
+import { HabitPlaner } from "../api/HabitPlaner.class.js";
 import { stringToColor } from "../helpers/colorHelper.js";
 import { firstDateOfMonth, getWeekDay, lastDateOfMonth } from "../helpers/dateHelper.js";
 
@@ -8,6 +10,15 @@ function drawNextMonth(date) {
 function drawPrevMonth(date) {
   return drawPlaner(new Date(firstDateOfMonth(date).getTime() - 86400000));
 }
+
+const habitPlaner = new HabitPlaner();
+
+
+
+window.addEventListener('authStateChange', async (e) => {
+  if(e.detail.user) await habitPlaner.getAllHabitsForUser(e.detail.user.uid)
+    drawHabits(document.querySelector('.itemsList'))
+})
 
 let selectedDate = null;
 
@@ -117,19 +128,18 @@ const getCalendar = (date = new Date()) => {
   return calendarDiv;
 }
 
-const getItem = (s) => {
+const getItem = (habit) => {
   const item = document.createElement('div');
   item.classList.add('item')
-  item.textContent = s;
-  item.setAttribute('id', s)
-  item.style.backgroundColor = stringToColor(s);
+  item.textContent = habit.name;
+  item.style.backgroundColor = habit.color;
 
   item.draggable = true;
 
 
   item.addEventListener('dragstart', (event) => {
       // данные в таскаемый элемент
-      event.dataTransfer.setData('text/plain', s);
+      event.dataTransfer.setData('text/plain', habit.id);
       
       event.target.classList.add('dragging');
   });
@@ -141,8 +151,22 @@ const getItem = (s) => {
   return item;
 }
 
+
+const drawHabits = (el) => {
+  el.innerHTML = '';
+  console.log('drawHabits', el, habitPlaner.habits);
+  if(!habitPlaner.habits.length) {
+    el.textContent = 'Add first habit'
+  }
+
+  habitPlaner.habits.map((habit) => {
+    el.append(getItem(habit));
+  })
+}
+
 const drawFooter = (dateOrNull = null) => {
   footer.innerHTML = '';
+  footer.addEventListener('click', e => e.stopPropagation())
 
   const itemsContainer = document.createElement('div');
   itemsContainer.classList.add('itemsContainer');
@@ -164,16 +188,28 @@ const drawFooter = (dateOrNull = null) => {
 
   dateOrNull && itemsContainerHeader.append(btn);
 
+  const btn1 = document.createElement('a');
+  btn1.href='javascript:void(0)';
+  btn1.textContent = '+';
+
+  itemsContainerHeader.append(btn1);
+
 
   itemsContainer.append(itemsContainerHeader)
 
   const itemsList = document.createElement('div');
   itemsList.classList.add('itemsList');
+itemsList.textContent = 'Loading...'
 
 
-  Array(dateOrNull ? dateOrNull.getDate() : 10).fill('item').map((s,i) => {
-    itemsList.append(getItem(`${s}-${i}`));
-  })
+  btn1.onclick = async () => {
+    await habitPlaner.addHabitForUser(window.auth.user.uid, new Habit(prompt('Name')))
+    await habitPlaner.getAllHabitsForUser(window.auth.user.uid)
+    drawHabits(itemsList)
+
+  }
+
+
 
   itemsContainer.append(itemsList)
 

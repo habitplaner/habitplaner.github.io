@@ -9,6 +9,13 @@ function drawPrevMonth(date) {
   return drawPlaner(new Date(firstDateOfMonth(date).getTime() - 86400000));
 }
 
+let selectedDate = null;
+
+window.addEventListener('calendarDateSelected', (e) => {
+  selectedDate = e.detail;
+  drawFooter(selectedDate ? new Date(selectedDate) : null)
+})
+
 const getCalendar = (date = new Date()) => {
   const calendarDiv = document.createElement('div');
   calendarDiv.classList.add('calendar');
@@ -45,6 +52,15 @@ const getCalendar = (date = new Date()) => {
     div.classList.add('day')
     div.dataset.date = d.toISOString().substring(0,10);
 
+ 
+    div.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const event = new CustomEvent("calendarDateSelected", { detail: e.currentTarget.dataset.date });
+      document.querySelector(`.day.active`)?.classList?.remove('active')
+      e.currentTarget.classList.add('active')
+      window.dispatchEvent(event)
+    });
+  
     // Что-то тащат над элементом
     div.addEventListener('dragover', (event) => {
       event.preventDefault(); // Essential to allow dropping
@@ -62,9 +78,12 @@ const getCalendar = (date = new Date()) => {
       event.preventDefault();
       const data = event.dataTransfer.getData('text/plain');
       event.target.classList.remove('droppable');
+      if (data) {
+        alert(`Добавляем ${data} в дату ${event.currentTarget.dataset.date}`)
+        console.log(data, event.currentTarget.dataset.date)
+      }
 
-      alert(`Добавляем ${data} в дату ${event.currentTarget.dataset.date}`)
-      console.log(data, event.currentTarget.dataset.date)
+
     });
 
     calendarDiv.append(div);
@@ -95,7 +114,6 @@ const getCalendar = (date = new Date()) => {
           }
       }
   });
-  calendarDiv.draggable = 'true'
   return calendarDiv;
 }
 
@@ -123,16 +141,37 @@ const getItem = (s) => {
   return item;
 }
 
-const drawFooter = () => {
+const drawFooter = (dateOrNull = null) => {
   footer.innerHTML = '';
+
   const itemsContainer = document.createElement('div');
   itemsContainer.classList.add('itemsContainer');
+
+  const itemsContainerHeader = document.createElement('header');
+  itemsContainerHeader.classList.add('itemsContainerHeader');
+
+  const itemsContainerHeaderTitle = document.createElement('h5');
+  itemsContainerHeaderTitle.classList.add('itemsContainerHeaderTitle');
+  itemsContainerHeaderTitle.textContent = dateOrNull ? `Привычки на ${dateOrNull.toLocaleDateString()}` : 'Перетащи привычку в календарь'
+  itemsContainerHeader.append(itemsContainerHeaderTitle);
+
+  const btn = document.createElement('a');
+  btn.href='javascript:void(0)';
+  btn.textContent = 'Все привычки';
+  btn.onclick = () => {
+    //alert(1);
+  }
+
+  dateOrNull && itemsContainerHeader.append(btn);
+
+
+  itemsContainer.append(itemsContainerHeader)
 
   const itemsList = document.createElement('div');
   itemsList.classList.add('itemsList');
 
 
-  Array(10).fill('item').map((s,i) => {
+  Array(dateOrNull ? dateOrNull.getDate() : 10).fill('item').map((s,i) => {
     itemsList.append(getItem(`${s}-${i}`));
   })
 
@@ -142,11 +181,7 @@ const drawFooter = () => {
 
 }
 
-export const drawPlaner = (date = new Date()) => {
-  main.innerHTML = '';
-
-  const section = document.createElement('section');
-
+const getCalendarHeader = (date = new Date()) => {
   const calendarHeader = document.createElement('header');
   calendarHeader.classList.add('calendarHeader')
 
@@ -165,13 +200,26 @@ export const drawPlaner = (date = new Date()) => {
   btn2.onclick = () => drawNextMonth(date)
   calendarHeader.append(btn2)
 
+  return calendarHeader;
+}
 
-  section.append(calendarHeader)
+export const drawPlaner = (date = new Date()) => {
+  main.innerHTML = '';
 
+  const section = document.createElement('section');
+  section.append(getCalendarHeader(date))
   section.append(getCalendar(date))
- 
   main.append(section)
 
   drawFooter()
 } 
 
+
+
+document.body.addEventListener('click', (e) => {
+  e.stopPropagation();
+  const event = new CustomEvent("calendarDateSelected", { detail: null });
+  window.dispatchEvent(event);
+  document.querySelector(`.day.active`)?.classList?.remove('active')
+
+});

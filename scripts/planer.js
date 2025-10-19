@@ -1,4 +1,5 @@
 import { Habit } from "../api/Habit.class.js";
+import { HabitInCalendar } from "../api/HabitInCalendar.class.js";
 import { HabitPlaner } from "../api/HabitPlaner.class.js";
 import { stringToColor } from "../helpers/colorHelper.js";
 import { firstDateOfMonth, getWeekDay, lastDateOfMonth } from "../helpers/dateHelper.js";
@@ -14,18 +15,28 @@ function drawPrevMonth(date) {
 const habitPlaner = new HabitPlaner();
 
 
-
-window.addEventListener('authStateChange', async (e) => {
-  if(e.detail.user) await habitPlaner.getAllHabitsForUser(e.detail.user.uid)
-    drawHabits(document.querySelector('.itemsList'))
-})
-
 let selectedDate = null;
+
+function MiniHabit(habit) {
+  const span = document.createElement('span');
+  span.classList.add('miniHabit');
+  span.style.backgroundColor = habit.color;
+  span.textContent = habit.shortName;
+  return span;
+
+}
 
 window.addEventListener('calendarDateSelected', (e) => {
   selectedDate = e.detail;
   drawFooter(selectedDate ? new Date(selectedDate) : null)
 })
+
+const drawHabitsInCalendar = () => {
+  console.log({'habitPlaner.habitsOfMonth': habitPlaner.habitsOfMonth})
+  habitPlaner.habitsOfMonth.forEach((hom) => {
+    document.querySelector(`.day[data-date='${hom.isoDate}']>.miniHabitContainer`).append(new MiniHabit(hom.habit))
+  })
+}
 
 const getCalendar = (date = new Date()) => {
   const calendarDiv = document.createElement('div');
@@ -91,11 +102,22 @@ const getCalendar = (date = new Date()) => {
       event.target.classList.remove('droppable');
       if (data) {
         alert(`Добавляем ${data} в дату ${event.currentTarget.dataset.date}`)
-        console.log(data, event.currentTarget.dataset.date)
+        const habit = habitPlaner.habits.find((h) => h.id === data)
+        console.log(data, event.currentTarget.dataset.date, {habit});
+        habitPlaner.addHabitToCalendar(
+          window.auth.user.uid,
+          new Date(event.currentTarget.dataset.date),
+          new HabitInCalendar(habit)
+        );
+
+        drawHabitsInCalendar(date)
+        
       }
 
 
     });
+
+    const miniHabitContainer =  ne
 
     calendarDiv.append(div);
   })
@@ -154,7 +176,6 @@ const getItem = (habit) => {
 
 const drawHabits = (el) => {
   el.innerHTML = '';
-  console.log('drawHabits', el, habitPlaner.habits);
   if(!habitPlaner.habits.length) {
     el.textContent = 'Add first habit'
   }
@@ -239,7 +260,7 @@ const getCalendarHeader = (date = new Date()) => {
   return calendarHeader;
 }
 
-export const drawPlaner = (date = new Date()) => {
+export const drawPlaner = async (date = new Date()) => {
   main.innerHTML = '';
 
   const section = document.createElement('section');
@@ -248,6 +269,14 @@ export const drawPlaner = (date = new Date()) => {
   main.append(section)
 
   drawFooter()
+
+  await habitPlaner.getAllHabitsForUser(window.auth.user.uid)
+  drawHabits(document.querySelector('.itemsList'));
+
+
+  await habitPlaner.getHabitsOfMonth(window.auth.user.uid, date)
+  drawHabitsInCalendar(date)
+
 } 
 
 
@@ -259,3 +288,4 @@ document.body.addEventListener('click', (e) => {
   document.querySelector(`.day.active`)?.classList?.remove('active')
 
 });
+

@@ -111,9 +111,7 @@
 
       onAuthStateChanged(auth, async (user) => {
         if (user) {
-          const event = new CustomEvent("authStateChange", { detail: { user } });
-          window.dispatchEvent(event)
-
+       
           localStorage.setItem('last-g-user', user.email)
 
           console.info('onAuthStateChanged', user)
@@ -122,7 +120,9 @@
           if (!cur) {
             await window.db.set(`users/${user.uid}`, { name: user.displayName, photo: user.photoURL, email: user.email, lastLogin: new Date().toISOString() });
           }
-          
+          const event = new CustomEvent("authStateChange", { detail: { user } });
+          window.dispatchEvent(event)
+
           window.auth.loginListeners.forEach((cb) => cb.call(cb, user))
         } else {
           const event = new CustomEvent("authStateChange", { detail: { user: null } });

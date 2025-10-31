@@ -1,0 +1,17 @@
+.headerProfileCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  small {
+    font-size: 1rem;
+    display: block;
+    width: 80px;
+    text-align: right;
+    line-height: 0.9;
+  }
+
+  img {
+    border-radius: 50%;
+  }
+}

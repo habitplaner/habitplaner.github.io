@@ -1,0 +1,22 @@
+.dragging {
+  border: 2px solid red;
+}
+
+.habitsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.habitsCardItem {
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  padding-right: 6px;
+  box-shadow: inset 1px 1px 5px rgba(0,0,0,0.33);
+  text-shadow: 1px 1px 0 #000;
+}

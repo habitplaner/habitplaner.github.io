@@ -1,0 +1,20 @@
+.inputWrapper {
+  display: block;
+  small {
+    display: block;
+  }
+
+  input, textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    min-height: 32px;
+
+    &[type='color'] {
+      padding: 0 12px;
+      min-width: 120px;
+      height: 36px;
+    }
+  }
+}

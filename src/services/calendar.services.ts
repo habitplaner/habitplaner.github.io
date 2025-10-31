@@ -20,6 +20,25 @@ export const getUserCalendarHabits = async (userId: string, date: Date) => {
   );
 };
 
+export const getAllUserCalendarHabits = async (userId: string) => {
+  const path = `habitsInCalendar/${userId}`;
+  const fbData = await firebaseDatabaseGetData(path);
+  console.log('getAllUserCalendarHabits', path, fbData);
+  return (
+    (Object.values(fbData)
+      .map((yearsMap) =>
+        Object.values(yearsMap as Record<string, ICalendarHabit>)
+          .map((monthsMap) =>
+            Object.values(monthsMap)
+              .map((daysMap) => Object.values(daysMap).flat())
+              .flat()
+          )
+          .flat()
+      )
+      .flat() as ICalendarHabit[]) ?? []
+  );
+};
+
 export const addUserCalendarHabit = async (
   userId: string,
   date: Date,

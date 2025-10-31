@@ -1,12 +1,12 @@
 .miniHabit {
-  --shadow-color: rgba(0,0,0,0.9);
-  --shadow-color2: rgba(0,0,0,0.4);
+  --shadow-color: rgba(0,0,0,0.5);
+  --shadow-color2: rgba(0,0,0,0.2);
   display: inline-block;
   width: 16px;
   height: 16px;
   border-radius: 3px;
   margin: 1px;
-  font-size: 10px;
+  font-size: 9px;
   line-height: 16px;
   text-align: center;
   font-weight: bolder;

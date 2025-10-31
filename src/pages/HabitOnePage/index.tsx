@@ -1,4 +1,5 @@
 import HabitIcon from '@components/HabitIcon';
+import HabitUsages from '@components/HabitUsages';
 import PageBody from '@components/Page/PageBody';
 import PageContainer from '@components/Page/PageContainer';
 import PageFooter from '@components/Page/PageFooter';
@@ -9,11 +10,13 @@ import Button from '@ui-kit/Button';
 import { NavLink, useParams } from 'react-router';
 
 const HabitOnePage = () => {
-  const { habits } = useAppSelector(selectHabits);
+  const { habits, isLoading } = useAppSelector(selectHabits);
   const p = useParams();
   const habitId = p.id as string;
 
   const habit = habits[habitId];
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <PageContainer>
@@ -25,29 +28,41 @@ const HabitOnePage = () => {
         }
       />
       <PageBody>
-        <p>{habit.description}</p>
-        <div style={{ fontSize: '10px' }}>
-          <dl>
-            <dt>Добавлено в календарь</dt>
-            <dd>
-              {habit.createdAt
-                ? new Date(habit.createdAt).toLocaleString()
-                : '-'}
-            </dd>
-            <dt>Обновлено</dt>
-            <dd>
-              {habit.updatedAt
-                ? new Date(habit.updatedAt).toLocaleString()
-                : '-'}
-            </dd>
-            <dt>Архив</dt>
-            <dd>
-              {habit.archivedAt
-                ? new Date(habit.archivedAt).toLocaleString()
-                : 'Неа'}
-            </dd>
-          </dl>
+        <div>
+          <em>{habit.description}</em>
         </div>
+        <div style={{ fontSize: '10px' }}>
+          <table border={0} width="100%">
+            <tbody>
+              <tr>
+                <td>Добавлено в календарь</td>
+                <td>
+                  {habit.createdAt
+                    ? new Date(habit.createdAt).toLocaleString()
+                    : '-'}
+                </td>
+              </tr>
+              <tr>
+                <td>Обновлено</td>
+                <td>
+                  {habit.updatedAt
+                    ? new Date(habit.updatedAt).toLocaleString()
+                    : '-'}
+                </td>
+              </tr>
+              <tr>
+                {' '}
+                <td>Завершено</td>
+                <td>
+                  {habit.archivedAt
+                    ? new Date(habit.archivedAt).toLocaleString()
+                    : 'Неа'}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <HabitUsages idHabit={habitId} />
       </PageBody>
 
       <PageFooter>

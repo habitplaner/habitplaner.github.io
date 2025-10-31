@@ -6,6 +6,7 @@ import PageHeader from '@components/Page/PageHeader';
 import { selectHabits } from '@store/habits/habits.slice';
 import { useAppSelector } from '@store/hooks';
 import Button from '@ui-kit/Button';
+import List from '@ui-kit/List';
 import Placeholder from '@ui-kit/Placeholder';
 import { NavLink, useLocation } from 'react-router';
 
@@ -21,20 +22,26 @@ const HabitsListPage = () => {
     <PageContainer>
       <PageHeader header="Список привычек" />
       <PageBody>
-        {        !all.length && <Placeholder>
-          <p style={{textAlign:'center'}}>
-          Список привычек пуст.
-          <br />
-          <NavLink to="/habit/new">Добавьте</NavLink> свою первую привычку
-          </p>
-        </Placeholder>}
-        {all.map((habit) => {
-          return (
-            <NavLink to={`/habit/${habit.id}`}>
-              <HabitItem habit={habit} key={habit.id} />
-            </NavLink>
-          );
-        })}
+        {!all.length && (
+          <Placeholder>
+            <p style={{ textAlign: 'center' }}>
+              Список привычек пуст.
+              <br />
+              <NavLink to="/habit/new">Добавьте</NavLink> свою первую привычку
+            </p>
+          </Placeholder>
+        )}
+        {all.length > 0 && (
+          <List border>
+            {all.map((habit) => {
+              return (
+                <NavLink to={`/habit/${habit.id}`}>
+                  <HabitItem habit={habit} key={habit.id} />
+                </NavLink>
+              );
+            })}
+          </List>
+        )}
       </PageBody>
       <PageFooter>
         <NavLink state={{ from: location }} to="/habit/new">

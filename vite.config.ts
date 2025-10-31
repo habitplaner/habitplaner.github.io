@@ -5,6 +5,8 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/',
+
   plugins: [
     tsconfigPaths(),
     react({
@@ -21,7 +23,7 @@ export default defineConfig({
       },
 
       manifest: {
-        display: 'standalone',
+        display: 'fullscreen',
         name: 'Habit Planer',
         short_name: 'HbtPlnr',
         description: 'Планер привычек',
@@ -51,10 +53,10 @@ export default defineConfig({
         ],
         shortcuts: [
           {
-            name: 'Новая запись',
+            name: 'Новая привычка',
             short_name: 'Добавить',
-            description: 'Новая запись за сегодня',
-            url: '/add',
+            description: 'Новая привычка',
+            url: '/habit/new',
             icons: [{ src: '/new-post-icon.png', sizes: '96x96' }],
           },
           {

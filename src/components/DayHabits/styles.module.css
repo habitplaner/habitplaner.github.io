@@ -1,13 +1,12 @@
 .dayHabitListItem {
   display: flex;
+  gap:6px;
   align-items: center;
-  gap: 8px;
   strong {
     display: flex;
     align-items: center;
+    font-weight: 600;
   }
-  padding: 8px;
-  border: 1px solid rgba(0,0,0,0.2)
 }
 
 .calendarHabitForm {

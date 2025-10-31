@@ -1,6 +1,6 @@
 import type { ICalendarHabit } from '@t/calendarHabit.types';
 import type { IHabit } from '@t/habit.types';
-import Button from '@ui-kit/Button';
+import Button, { ButtonVariant } from '@ui-kit/Button';
 import React from 'react';
 
 import styles from './styles.module.css';
@@ -83,6 +83,7 @@ const CalendarHabitModal: React.FC<ICalendarHabitModalProps> = ({
           onClick={() => {
             onSave({ completedAt, comment });
           }}
+          variant={ButtonVariant.primary}
         >
           Сохранить
         </Button>

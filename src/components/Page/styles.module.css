@@ -7,7 +7,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 54px;
+    height: 36px;
     h1 {
       font-size: 18px;
       margin: 0;
@@ -27,6 +27,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 54px;
+    height: 36px;
   }
 }

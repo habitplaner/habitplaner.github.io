@@ -17,6 +17,8 @@ const MiniCalendarHabit: React.FC<IMiniCalendarHabitProps> = ({
       habit={habit}
       title={calendarHabit.comment}
       style={{ filter: calendarHabit.completedAt ? 'blur(1px)' : 'none' }}
+      data-calendar-habit={calendarHabit.id}
+      id={`calendarHabit${calendarHabit.id}`}
     />
   );
 };

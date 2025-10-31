@@ -1,11 +1,12 @@
 import MiniCalendarHabit from '@components/Calendar/MiniCalendarHabit';
 import type { ICalendarHabit } from '@t/calendarHabit.types';
 import type { IHabit } from '@t/habit.types';
+import ListItem from '@ui-kit/List/ListItem';
 import type React from 'react';
 
 import styles from './styles.module.css';
 
-interface IDayHabitItemProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IDayHabitItemProps extends React.HTMLAttributes<HTMLLIElement> {
   habit: IHabit;
   calendarHabit: ICalendarHabit;
 }
@@ -16,7 +17,7 @@ const DayHabitItem: React.FC<IDayHabitItemProps> = ({
   ...rest
 }) => {
   return (
-    <div {...rest} className={styles.dayHabitListItem}>
+    <ListItem {...rest} className={styles.dayHabitListItem}>
       <strong>
         <MiniCalendarHabit habit={habit} calendarHabit={calendarHabit} />
         &nbsp; {habit.name}
@@ -33,7 +34,7 @@ const DayHabitItem: React.FC<IDayHabitItemProps> = ({
       <span style={{ marginLeft: 'auto' }}>
         {calendarHabit.completedAt ? '✅' : '☐'}
       </span>
-    </div>
+    </ListItem>
   );
 };
 

@@ -1,3 +1,4 @@
+import { accentCalendarHabit } from '@helpers/animateHelper';
 import { getISODay } from '@helpers/dateHelper';
 import {
   type ActionReducerMapBuilder,
@@ -44,7 +45,7 @@ export const addCalendarHabit = createAsyncThunk<
   };
 
   const addedHabit = await addUserCalendarHabit(userId, date, calendarHabit);
-
+  accentCalendarHabit(addedHabit.id);
   return addedHabit;
 });
 export const updateCalendarHabit = createAsyncThunk<
@@ -63,7 +64,7 @@ export const updateCalendarHabit = createAsyncThunk<
     };
 
     const updatedCHabit = await updateUserCalendarHabit(userId, calendarHabit);
-
+    accentCalendarHabit(updatedCHabit.id);
     return updatedCHabit;
   }
 );

@@ -12,7 +12,7 @@ const HabitCardItem: React.FC<IHabitCardItemProps> = ({ habit }) => {
     <div
       className={styles.habitsCardItem}
       draggable
-      style={{ backgroundColor: habit.color, borderColor: habit.color }}
+      style={{ borderColor: habit.color }}
       onDragStart={(event) => {
         event.dataTransfer.setData('text/plain', habit.id);
 

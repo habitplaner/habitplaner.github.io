@@ -16,7 +16,7 @@ const MiniCalendarHabit: React.FC<IMiniCalendarHabitProps> = ({
     <HabitIcon
       habit={habit}
       title={calendarHabit.comment}
-      style={{ opacity: calendarHabit.completedAt ? 0.3 : 1 }}
+      style={{ filter: calendarHabit.completedAt ? 'blur(1px)' : 'none' }}
     />
   );
 };

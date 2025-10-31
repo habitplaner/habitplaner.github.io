@@ -16,6 +16,7 @@ import React from 'react';
 
 import CalendarActive from './CalendarActive';
 import styles from './styles.module.css';
+import Button, { ButtonVariant } from '@ui-kit/Button';
 
 const CalendarWithData = () => {
   const { isLoading, loadingError, currentDate } =
@@ -37,7 +38,7 @@ const CalendarWithData = () => {
       }}
     >
       <header className={styles.calendarHeader}>
-        <button
+        <Button variant={ButtonVariant.transparent}
           onClick={() => {
             dispatch(
               getCalendarHabits(
@@ -46,8 +47,8 @@ const CalendarWithData = () => {
             );
           }}
         >
-          🔙
-        </button>
+          ←
+        </Button>
         {isLoading && '⏳'}
         {loadingError && <span title={loadingError.message}>❌</span>}
         <label>
@@ -60,7 +61,7 @@ const CalendarWithData = () => {
             }}
           />
         </label>
-        <button
+        <Button variant={ButtonVariant.transparent}
           onClick={() => {
             dispatch(
               getCalendarHabits(
@@ -71,8 +72,8 @@ const CalendarWithData = () => {
             );
           }}
         >
-          🔜
-        </button>
+          →
+        </Button>
       </header>
       <section
         className={styles.calendarInfinity}

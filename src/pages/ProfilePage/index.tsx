@@ -1,6 +1,8 @@
 import { firebaseSignOut } from '@api/firebase.auth';
+import PageContainer from '@components/Page/PageContainer';
 import { useAppSelector } from '@store/hooks';
 import { selectUser } from '@store/user/user.slice';
+import Button from '@ui-kit/Button';
 import { useNavigate } from 'react-router';
 
 const ProfilePage = () => {
@@ -11,14 +13,16 @@ const ProfilePage = () => {
     navigate('/home');
   };
   return (
-    <section style={{ textAlign: 'center' }}>
+    <PageContainer style={{ textAlign: 'center' }}>
+      <p>
       <h2>{user?.fullName}</h2>
-      <img src={user?.photo} alt="" />
+      <img src={user?.photo} alt="" style={{maxWidth:100}} />
       <br />
       <br />
       <br />
-      <button onClick={handleLogout}>Logout</button>
-    </section>
+      <Button onClick={handleLogout}>Logout 🚪</Button>
+      </p>
+    </PageContainer>
   );
 };
 

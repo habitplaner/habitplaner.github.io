@@ -24,7 +24,7 @@
     }
 
     .dayLoading {
-      opacity: 0.2;
+      animation: skeleton-loading 1s linear infinite alternate;
     }
   
     .active {
@@ -47,6 +47,8 @@
   }
 }
 
+
+
 .calendarDayAdditionalContent {
   position: absolute;
   width: 100%;
@@ -54,4 +56,14 @@
   bottom: 0;
   text-align: left;
   line-height: 12px;
+}
+
+
+@keyframes skeleton-loading {
+  0% {
+      opacity: 0.1; 
+  }
+  100% {
+      opacity: 0.5;
+  }
 }

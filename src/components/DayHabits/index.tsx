@@ -27,7 +27,7 @@ const DayHabits: React.FC<IDayHabitsProps> = ({ day }) => {
   const dispatch = useAppDispatch();
   return (
     <PageContainer>
-      <PageHeader header={new Date(day).toLocaleDateString()}>
+      <PageHeader header={new Date(day).toLocaleDateString('default', {weekday:'short', day:'numeric', month:'short'})}>
         <Button
           variant={ButtonVariant.transparent}
           onClick={() => dispatch(setSelectedDate(null))}

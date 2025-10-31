@@ -21,7 +21,7 @@ const AppHeader = () => {
       )}
       {!isAuthenticationLoading && !user && (
         <NavLink to="/login" end>
-          login
+          Войти 👋
         </NavLink>
       )}
     </header>

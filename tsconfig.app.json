@@ -31,7 +31,8 @@
       "@store/*": ["src/store/*"],
       "@services/*": ["src/services/*"],
       "@pages/*": ["src/pages/*"],
-      "@ui-kit/*": ["src/ui-kit/*"]
+      "@ui-kit/*": ["src/ui-kit/*"],
+      "@const/*": ["src/const/*"]
     }
   },
   "include": ["src"]

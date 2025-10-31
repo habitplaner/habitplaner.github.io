@@ -3,6 +3,7 @@ import { NavLink } from 'react-router';
 
 import HeaderProfileCard from './components/HeaderProfileCard/HeaderProfileCard';
 import styles from './styles.module.css';
+import { APP_NAME } from '@const/app.const';
 
 const AppHeader = () => {
   const { user, isAuthenticationLoading } = useAppSelector((s) => s.user);
@@ -10,7 +11,7 @@ const AppHeader = () => {
   return (
     <header className={styles.appHeader}>
       <NavLink to="/" end>
-        AppName
+        {APP_NAME}
       </NavLink>
 
       {!isAuthenticationLoading && user && (

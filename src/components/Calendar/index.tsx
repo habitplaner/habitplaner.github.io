@@ -65,6 +65,10 @@ const Calendar: React.FC<ICalendarProps> = ({
 
   return (
     <div className={styles.calendarWrapper}>
+      <div className={styles.monthHeader}>
+        {date.toLocaleDateString('default', { month: 'long' })}
+        <small>{date.getFullYear()}</small>
+      </div>
       <div className={styles.daysContainer}>
         {weekDayNames.map((name) => {
           return (

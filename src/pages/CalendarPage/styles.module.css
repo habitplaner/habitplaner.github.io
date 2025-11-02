@@ -2,13 +2,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  input {
-    background: transparent;
-    outline: none;
-    border: none;
-    text-align: center;
-  }
+  position: fixed;
+  width: 100dvw;
+  padding: 8px 0;  
 }
 .calendarInfinity {
   scroll-snap-type: x mandatory;
@@ -19,10 +15,33 @@
 
 
   >div {
-    width: 110dvw;
+    width: 100dvw;
     scroll-snap-type: x mandatory;
     scroll-snap-align: center;
     padding-bottom: 12px;
   }
 
+}
+
+.loading {
+  animation: dot-loading 1.4s ease-in-out infinite;
+  width: 300px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+@keyframes dot-loading {
+  0% {
+      opacity: 0.3; 
+      transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1, 1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
 }

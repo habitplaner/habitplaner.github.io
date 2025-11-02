@@ -12,11 +12,12 @@ import {
   setSelectedDate,
 } from '@store/calendar/calendar.slice';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
+import Button, { ButtonVariant } from '@ui-kit/Button';
+import { showModal } from '@ui-kit/Modal/showModal';
 import React from 'react';
 
 import CalendarActive from './CalendarActive';
 import styles from './styles.module.css';
-import Button, { ButtonVariant } from '@ui-kit/Button';
 
 const CalendarWithData = () => {
   const { isLoading, loadingError, currentDate } =
@@ -38,7 +39,8 @@ const CalendarWithData = () => {
       }}
     >
       <header className={styles.calendarHeader}>
-        <Button variant={ButtonVariant.transparent}
+        <Button
+          variant={ButtonVariant.transparent}
           onClick={() => {
             dispatch(
               getCalendarHabits(
@@ -46,22 +48,13 @@ const CalendarWithData = () => {
               )
             );
           }}
+          title={loadingError?.message}
         >
           ←
         </Button>
-        {isLoading && '⏳'}
-        {loadingError && <span title={loadingError.message}>❌</span>}
-        <label>
-          <input
-            type="month"
-            value={currentDate.substring(0, 7)}
-            onChange={(e) => {
-              console.log();
-              dispatch(getCalendarHabits(`${e.target.value}-01`));
-            }}
-          />
-        </label>
-        <Button variant={ButtonVariant.transparent}
+        {isLoading && <div className={styles.loading}>...</div>}
+        <Button
+          variant={ButtonVariant.transparent}
           onClick={() => {
             dispatch(
               getCalendarHabits(
@@ -70,6 +63,24 @@ const CalendarWithData = () => {
                 )
               )
             );
+          }}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            showModal({
+              header: 'Выбор даты',
+              children: (clos) => (
+                <label>
+                  <input
+                    type="month"
+                    value={currentDate.substring(0, 7)}
+                    onChange={(e) => {
+                      dispatch(getCalendarHabits(`${e.target.value}-01`));
+                      clos();
+                    }}
+                  />
+                </label>
+              ),
+            });
           }}
         >
           →
